@@ -29,7 +29,21 @@ final class SwiftOnnxRuntimeBindingsTests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
     }
-
+    
+    func testCreateSessionData() throws {
+        do {
+            let env = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
+            let options = try ORTSessionOptions()
+            try options.setLogSeverityLevel(ORTLoggingLevel.verbose)
+            try options.setIntraOpNumThreads(1)
+            // Create the ORTSession
+            let modelData = try Data(contentsOf: URL(filePath: modelPath))
+            _ = try ORTSession(env: env, modelData: modelData, sessionOptions: options)
+        } catch let error {
+            XCTFail(error.localizedDescription)
+        }
+    }
+    
     func testAppendCoreMLEP() throws {
         do {
             let env = try ORTEnv(loggingLevel: ORTLoggingLevel.verbose)
