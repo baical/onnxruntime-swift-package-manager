@@ -35,6 +35,20 @@ NS_ASSUME_NONNULL_BEGIN
                                error:(NSError**)error NS_DESIGNATED_INITIALIZER;
 
 /**
+ * Creates a session.
+ *
+ * @param env The ORT Environment instance.
+ * @param data The data to the ONNX model.
+ * @param sessionOptions Optional session configuration options.
+ * @param error Optional error information set if an error occurs.
+ * @return The instance, or nil if an error occurs.
+ */
+- (nullable instancetype)initWithEnv:(ORTEnv*)env
+                           modelData:(NSData*)data
+                      sessionOptions:(nullable ORTSessionOptions*)sessionOptions
+                               error:(NSError**)error NS_DESIGNATED_INITIALIZER;
+
+/**
  * Runs the model.
  * The inputs and outputs are pre-allocated.
  *
