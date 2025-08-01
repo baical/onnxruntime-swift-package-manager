@@ -56,6 +56,33 @@ NS_ASSUME_NONNULL_BEGIN
   ORT_OBJC_API_IMPL_CATCH_RETURNING_NULLABLE(error)
 }
 
+- (nullable instancetype)initWithEnv:(ORTEnv*)env
+                           modelData:(NSData*)data
+                      sessionOptions:(nullable ORTSessionOptions*)sessionOptions
+                               error:(NSError**)error {
+    if ((self = [super init]) == nil) {
+        return nil;
+    }
+    
+    try {
+        if (!sessionOptions) {
+            sessionOptions = [[ORTSessionOptions alloc] initWithError:error];
+            if (!sessionOptions) {
+                return nil;
+            }
+        }
+        
+        _env = env;
+        _session = Ort::Session{[env CXXAPIOrtEnv],
+            data.bytes,
+            data.length,
+            [sessionOptions CXXAPIOrtSessionOptions]};
+        
+        return self;
+    }
+    ORT_OBJC_API_IMPL_CATCH_RETURNING_NULLABLE(error)
+}
+
 - (BOOL)runWithInputs:(NSDictionary<NSString*, ORTValue*>*)inputs
               outputs:(NSDictionary<NSString*, ORTValue*>*)outputs
            runOptions:(nullable ORTRunOptions*)runOptions
