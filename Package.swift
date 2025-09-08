@@ -21,15 +21,12 @@ import class Foundation.ProcessInfo
 
 let package = Package(
     name: "onnxruntime",
-    platforms: [.iOS(.v13),
-                .macOS(.v11)],
+    platforms: [.iOS(.v15),
+                .macCatalyst(.v15)],
     products: [
         .library(name: "onnxruntime",
                  type: .static,
                  targets: ["OnnxRuntimeBindings"]),
-        .library(name: "onnxruntime_extensions",
-                 type: .static,
-                 targets: ["OnnxRuntimeExtensions"]),
     ],
     dependencies: [],
     targets: [
@@ -52,18 +49,6 @@ let package = Package(
                     path: "swift/OnnxRuntimeBindingsTests",
                     resources: [
                         .copy("Resources/single_add.basic.ort")
-                    ]),
-        .target(name: "OnnxRuntimeExtensions",
-                dependencies: ["onnxruntime_extensions", "onnxruntime"],
-                path: "extensions",
-                cxxSettings: [
-                    .define("ORT_SWIFT_PACKAGE_MANAGER_BUILD"),
-                ]),
-        .testTarget(name: "OnnxRuntimeExtensionsTests",
-                    dependencies: ["OnnxRuntimeExtensions", "OnnxRuntimeBindings"],
-                    path: "swift/OnnxRuntimeExtensionsTests",
-                    resources: [
-                        .copy("Resources/decode_image.onnx")
                     ]),
     ],
     cxxLanguageStandard: .cxx17
@@ -98,20 +83,8 @@ if let pod_archive_path = ProcessInfo.processInfo.environment["ORT_POD_LOCAL_PAT
     // ORT release
     package.targets.append(
        Target.binaryTarget(name: "onnxruntime",
-                           url: "https://download.onnxruntime.ai/pod-archive-onnxruntime-c-1.20.0.zip",
+                           url: "https://github.com/baical/onnxruntime-swift-package-manager/releases/download/1.22.0-catalyst/ort-1.22.0-ios-catalyst.zip",
                            // SHA256 checksum
-                           checksum: "50891a8aadd17d4811acb05ed151ba6c394129bb3ab14e843b0fc83a48d450ff")
-    )
-}
-
-if let ext_pod_archive_path = ProcessInfo.processInfo.environment["ORT_EXTENSIONS_POD_LOCAL_PATH"] {
-    package.targets.append(Target.binaryTarget(name: "onnxruntime_extensions", path: ext_pod_archive_path))
-} else {
-    // ORT Extensions release
-    package.targets.append(
-        Target.binaryTarget(name: "onnxruntime_extensions",
-                            url: "https://download.onnxruntime.ai/pod-archive-onnxruntime-extensions-c-0.13.0.zip",
-                            // SHA256 checksum
-                            checksum: "346522d1171d4c99cb0908fa8e4e9330a4a6aad39cd83ce36eb654437b33e6b5")
+                           checksum: "6f575b23150a30d6b6482a72d2baa55e652bb2e586b6d6e9603ca05d2e122122")
     )
 }
