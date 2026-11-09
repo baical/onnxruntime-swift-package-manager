@@ -1,4 +1,4 @@
-// swift-tools-version: 5.6
+// swift-tools-version: 5.9
 //   The swift-tools-version declares the minimum version of Swift required to build this package and MUST be the first
 //   line of this file. 5.6 is required to support zip files for the pod archive binaryTarget.
 //
@@ -21,8 +21,8 @@ import class Foundation.ProcessInfo
 
 let package = Package(
     name: "onnxruntime",
-    platforms: [.iOS(.v15),
-                .macCatalyst(.v15)],
+    platforms: [.iOS(.v17),
+                .macCatalyst(.v17)],
     products: [
         .library(name: "onnxruntime",
                  type: .static,
@@ -83,8 +83,8 @@ if let pod_archive_path = ProcessInfo.processInfo.environment["ORT_POD_LOCAL_PAT
     // ORT release
     package.targets.append(
        Target.binaryTarget(name: "onnxruntime",
-                           url: "https://github.com/baical/onnxruntime-swift-package-manager/releases/download/1.22.0-catalyst/ort-1.22.0-ios-catalyst.zip",
+                           url: "https://github.com/baical/onnxruntime-swift-package-manager/releases/download/2026.11.0/ort-1.22.0-ios-catalyst-min17.zip",
                            // SHA256 checksum
-                           checksum: "6f575b23150a30d6b6482a72d2baa55e652bb2e586b6d6e9603ca05d2e122122")
+                           checksum: "c9c10dfdeff55587176a614f180a9e209864a9c6f255b09ba9e941138c0331f6")
     )
 }
